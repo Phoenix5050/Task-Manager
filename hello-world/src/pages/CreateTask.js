@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { TaskContext } from "../context/TaskContext";
+import styles from "../styles/CreateTask.module.css";
 
 function CreateTask() {
   const navigate = useNavigate();
@@ -19,20 +20,30 @@ function CreateTask() {
   };
 
   return (
-    <div className="createTask">
-      <Link to="/">Return Home</Link>
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
-        <Form className="formContainer">
-          <label>Taskname: </label>
-          <ErrorMessage name="taskName" component="span" />
-          <Field name="taskName" placeholder="(Ex. Do laundry...)" />
-          <label>Description: </label>
-          <ErrorMessage name="descriptionText" component="span" />
-          <Field name="descriptionText" placeholder="(Ex. With detergent...)" />
-          <button type="submit">Create Task</button>
-        </Form>
-      </Formik>
-    </div>
+    <main className={styles.createTask}>
+      <header>
+        <h1>Create a New Task</h1>
+        <button onClick={() => navigate("/")}>
+          Return Home
+        </button>
+      </header>
+
+      <section>
+        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+          <Form className={styles.formContainer}>
+            <label htmlFor="taskName">Taskname:</label>
+            <ErrorMessage name="taskName" component="span" />
+            <Field id="taskName" name="taskName" placeholder="(Ex. Do laundry...)" />
+
+            <label htmlFor="descriptionText">Description:</label>
+            <ErrorMessage name="descriptionText" component="span" />
+            <Field id="descriptionText" name="descriptionText" placeholder="(Ex. With detergent...)" />
+
+            <button type="submit">Create Task</button>
+          </Form>
+        </Formik>
+      </section>
+    </main>
   );
 }
 

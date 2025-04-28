@@ -1,30 +1,45 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { TaskContext } from "../context/TaskContext";
+import styles from "../styles/Home.module.css";
 
 function Home() {
+  const navigate = useNavigate();
   const { tasks, deleteTask, toggleComplete } = useContext(TaskContext);
 
   return (
-    <div className="home">
-      <h1>Task Manager</h1>
-      <Link to="/createtask">Add New Task</Link>
+    <main className={styles.home}>
+      <header>
+        <h1>Task Manager</h1>
+        <button onClick={() => navigate("/createtask")}>
+          + Create New Task
+        </button>
+      </header>
 
-      {tasks.map((task, index) => (
-        // display tasks using name and description followed by buttons to mark as complete/incomplete and delete
-        <div
-          key={index}
-          className={`task ${task.completed ? "completed" : ""}`}
-        >
-          <div className="taskname">{task.taskName}</div>
-          <div className="body">{task.descriptionText}</div>
-          <button onClick={() => toggleComplete(index)}>
-            {task.completed ? "Mark as incomplete" : "Mark as complete"}
-          </button>
-          <button onClick={() => deleteTask(index)}>Delete</button>
-        </div>
-      ))}
-    </div>
+      <section className={styles.taskList}>
+        {tasks.length === 0 ? (
+          <p>No tasks yet. Add one!</p>
+        ) : (
+          tasks.map((task, index) => (
+            <article
+              key={index}
+              className={`${styles.task} ${task.completed ? styles.completed : ""}`}
+            >
+              <h2 className={styles.taskname}>{task.taskName}</h2>
+              <p>{task.descriptionText}</p>
+              <div className={styles.taskActions}>
+                <button onClick={() => toggleComplete(index)}>
+                  {task.completed ? "Mark Incomplete" : "Mark Completed"}
+                </button>
+                <button onClick={() => deleteTask(index)}>
+                  Delete
+                </button>
+              </div>
+            </article>
+          ))
+        )}
+      </section>
+    </main>
   );
 }
 
